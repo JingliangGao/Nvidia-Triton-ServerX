@@ -1,0 +1,83 @@
+Source: kytensor
+Priority: optional
+Maintainer: liuyihu <liuyihu@kylinos.cn>
+Build-Depends: debhelper-compat (= 11), cmake, kytensor-llm, kytensor-llm-dev, rapidjson-dev, libprotobuf-dev, libgrpc++-dev, protobuf-compiler-grpc, libboost1.83-all-dev, libgtest-dev, libb64-dev, prometheus-cpp-dev, python3-grpc-tools, pybind11-dev, libarchive-dev, lsb-release, libglib2.0-dev, nlohmann-json3-dev
+Standards-Version: 4.6.0
+Section: libs
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/triton
+#Vcs-Git: https://salsa.debian.org/debian/triton.git
+Rules-Requires-Root: no
+
+Package: kytensor-server
+Replaces: libtriton-server (<< 2.49.0.6-ok3~)
+Breaks: libtriton-server (<< 2.49.0.6-ok3~)
+Section: libs
+Architecture: amd64 arm64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}, libprometheus-cpp-core1.0
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: kytensor-client
+Replaces: libtriton-client (<< 2.49.0.6-ok3~)
+Breaks: libtriton-client (<< 2.49.0.6-ok3~)
+Section: libs
+Architecture: amd64 arm64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}, onnxruntime-backend, kytensor-python, kytensor-llama
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: kytensor-llama
+Replaces: llm-backend
+Section: libs
+Architecture: amd64 arm64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: kytensor-client-unittest
+Replaces: libtriton-client-unittest (<< 2.49.0.6-ok3~)
+Breaks: libtriton-client-unittest (<< 2.49.0.6-ok3~)
+Section: libs
+Architecture: amd64 arm64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}, kytensor-server, onnxruntime-backend
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: kytensor-python
+Replaces: libtriton-python (<< 2.49.0.6-ok3~)
+Breaks: libtriton-python (<< 2.49.0.6-ok3~)
+Section: libs
+Architecture: amd64 arm64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: libtriton-server
+Section: oldlibs
+Architecture: all
+Depends: kytensor-server, ${shlibs:Depends}, ${misc:Depends}
+Description: transitional package
+
+Package: libtriton-client
+Section: oldlibs
+Architecture: all
+Depends: kytensor-client, ${shlibs:Depends}, ${misc:Depends}
+Description: transitional package
+
+Package: libtriton-client-unittest
+Section: oldlibs
+Architecture: all
+Depends: kytensor-client-unittest, ${shlibs:Depends}, ${misc:Depends}
+Description: transitional package
+
+Package: libtriton-python
+Section: oldlibs
+Architecture: all
+Depends: kytensor-python, ${shlibs:Depends}, ${misc:Depends}
+Description: transitional package

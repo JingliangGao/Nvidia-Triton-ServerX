@@ -1,0 +1,181 @@
+# Copyright 2021-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#  * Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#  * Neither the name of NVIDIA CORPORATION nor the names of its
+#    contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+cmake_minimum_required(VERSION 3.16)
+project(tritonthirdparty LANGUAGES C CXX)
+#
+# ExternalProject Dependencies
+#
+# For each ExternalProject dependency we use PATCH_COMMAND to copy the
+# project source into TRITON_THIRD_PARTY_SRC_INSTALL_PREFIX. If
+# TRITON_THIRD_PARTY_SRC_INSTALL_PREFIX is not set then source will
+# not be installed. Note that PATCH_COMMAND is executed after the
+# source is downloaded/updated and is not defined by default so it
+# allows a good point to perform the source install.
+#
+include(ExternalProject)
+if(NOT TRITON_THIRD_PARTY_INSTALL_PREFIX)
+  message(FATAL_ERROR "TRITON_THIRD_PARTY_INSTALL_PREFIX must be set")
+endif() # TRITON_THIRD_PARTY_INSTALL_PREFIX
+if(NOT TRITON_THIRD_PARTY_SRC_INSTALL_PREFIX)
+  message(STATUS "TRITON_THIRD_PARTY_SRC_INSTALL_PREFIX not set")
+  set(INSTALL_SRC_DEST_ARG "")
+else()
+  set(INSTALL_SRC_DEST_ARG --dest ${TRITON_THIRD_PARTY_SRC_INSTALL_PREFIX})
+endif() # TRITON_THIRD_PARTY_INSTALL_PREFIX
+# If CMAKE_TOOLCHAIN_FILE is set, propagate that hint path to the external
+# projects.
+set(_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE "")
+if (CMAKE_TOOLCHAIN_FILE)
+  set(_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}")
+endif()
+# If VCPKG_TARGET_TRIPLET is set, propagate that hint path to the external
+# projects.
+set(_CMAKE_ARGS_VCPKG_TARGET_TRIPLET "")
+if (VCPKG_TARGET_TRIPLET)
+  set(_CMAKE_ARGS_VCPKG_TARGET_TRIPLET "-DVCPKG_TARGET_TRIPLET:STRING=${VCPKG_TARGET_TRIPLET}")
+endif()
+# If OPENSSL_ROOT_DIR is set, propagate that hint path to the external
+# projects with OpenSSL dependency.
+set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "")
+if (OPENSSL_ROOT_DIR)
+  set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "-DOPENSSL_ROOT_DIR:PATH=${OPENSSL_ROOT_DIR}")
+endif()
+
+# Some libs are installed to ${TRITON_THIRD_PARTY_INSTALL_PREFIX}/{LIB}/lib64 instead
+# of ${TRITON_THIRD_PARTY_INSTALL_PREFIX}/{LIB}/lib on Centos
+set (LIB_DIR "lib")
+if(LINUX)
+  file(STRINGS "/etc/os-release" DISTRO_ID_LIKE REGEX "ID_LIKE")
+  if(${DISTRO_ID_LIKE} MATCHES "rhel|centos")
+    set (LIB_DIR "lib64")
+  endif(${DISTRO_ID_LIKE} MATCHES "rhel|centos")
+endif(LINUX)
+set(TRITON_CORE_HEADERS_ONLY OFF)
+
+# C++ standard
+set(TRITON_MIN_CXX_STANDARD 17 CACHE STRING "The minimum C++ standard whose features are requested to build this target.")
+
+#
+# Build libcurl
+#
+set(LIBCURL_EXTRA_BUILD_ARGS "")
+if (WIN32)
+  set(LIBCURL_EXTRA_BUILD_ARGS "-DCURL_USE_SCHANNEL:BOOL=ON")
+endif()
+#ExternalProject_Add(curl
+#  PREFIX curl
+#  #GIT_REPOSITORY "https://github.com/curl/curl.git"
+#  #GIT_TAG "curl-7_86_0"
+#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/curl"
+#  EXCLUDE_FROM_ALL ON
+#  CMAKE_CACHE_ARGS
+#    ${_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE}
+#    ${_CMAKE_ARGS_VCPKG_TARGET_TRIPLET}
+#    -DCMAKE_CXX_STANDARD:STRING=${TRITON_MIN_CXX_STANDARD}
+#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+#    -DBUILD_TESTING:BOOL=OFF
+#    -DBUILD_CURL_EXE:BOOL=OFF
+#    -DBUILD_SHARED_LIBS:BOOL=OFF
+#    -DCURL_STATICLIB:BOOL=ON
+#    -DHTTP_ONLY:BOOL=ON
+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+#    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/curl
+#    ${LIBCURL_EXTRA_BUILD_ARGS}
+#  PATCH_COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/install_src.py --src <SOURCE_DIR> ${INSTALL_SRC_DEST_ARG}
+#)
+#
+
+#
+# Build libevent
+#
+ExternalProject_Add(libevent
+  PREFIX libevent
+  #GIT_REPOSITORY "https://github.com/libevent/libevent.git"
+  #GIT_TAG "release-2.1.8-stable"
+  #SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevent/src/libevent"
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libevent"
+  EXCLUDE_FROM_ALL ON
+  CMAKE_CACHE_ARGS
+    ${_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE}
+    ${_CMAKE_ARGS_VCPKG_TARGET_TRIPLET}
+    -DCMAKE_CXX_STANDARD:STRING=${TRITON_MIN_CXX_STANDARD}
+    -DEVENT__DISABLE_SAMPLES:BOOL=ON
+    -DEVENT__DISABLE_TESTS:BOOL=ON
+    -DEVENT__DISABLE_BENCHMARK:BOOL=ON
+    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/libevent
+  PATCH_COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/install_src.py --src <SOURCE_DIR> ${INSTALL_SRC_DEST_ARG}
+)
+#
+# Build patched libevhtp
+#
+if (WIN32)
+# FIXME evhtp can't be built successfully in native Windows environment
+# CMAKE_PREFIX_PATH is needed to find libevent
+ExternalProject_Add(libevhtp
+  PREFIX libevhtp
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libevhtp/libevhtp"
+  EXCLUDE_FROM_ALL ON
+  DOWNLOAD_COMMAND ""
+  CMAKE_CACHE_ARGS
+    ${_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE}
+    ${_CMAKE_ARGS_VCPKG_TARGET_TRIPLET}
+    -DCMAKE_CXX_STANDARD:STRING=${TRITON_MIN_CXX_STANDARD}
+    -DEVHTP_DISABLE_REGEX:BOOL=ON
+    -DEVHTP_DISABLE_SSL:BOOL=ON
+    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
+    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
+    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+    -DCMAKE_PREFIX_PATH:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/libevent
+    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/libevhtp
+  PATCH_COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/install_src.py --src <SOURCE_DIR> ${INSTALL_SRC_DEST_ARG}
+  DEPENDS libevent
+)
+else()
+ExternalProject_Add(libevhtp
+  PREFIX libevhtp
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libevhtp/libevhtp"
+  EXCLUDE_FROM_ALL ON
+  DOWNLOAD_COMMAND ""
+  CMAKE_CACHE_ARGS
+    ${_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE}
+    ${_CMAKE_ARGS_VCPKG_TARGET_TRIPLET}
+    -DCMAKE_CXX_STANDARD:STRING=${TRITON_MIN_CXX_STANDARD}
+    -DEVHTP_DISABLE_REGEX:BOOL=ON
+    -DEVHTP_DISABLE_SSL:BOOL=ON
+
+    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
+    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
+    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+    -DLibevent_DIR:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/libevent/lib/cmake/libevent
+    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_THIRD_PARTY_INSTALL_PREFIX}/libevhtp
+  PATCH_COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/install_src.py --src <SOURCE_DIR> ${INSTALL_SRC_DEST_ARG}
+  DEPENDS libevent
+)
+endif()

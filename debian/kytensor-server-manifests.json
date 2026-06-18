@@ -1,0 +1,9 @@
+{
+    "package": "kytensor-server",
+    "description": "kytensor-server组件升级文件清单",
+    "manifests": {
+        "upgrade_files": [
+            "/var/opt/system/conf/kytensor/kytensor.conf"
+            ]
+    }
+}

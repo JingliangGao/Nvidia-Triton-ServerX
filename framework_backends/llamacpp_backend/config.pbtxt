@@ -1,0 +1,221 @@
+backend: "llamacpp"
+#max_batch_size: 8
+#dynamic_batching {
+#  max_queue_delay_microseconds: 5000000
+#}
+#max_batch_size: 1
+model_transaction_policy {
+  decoupled: True
+}
+input [
+  {
+    name: "request_type"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "request_id"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "text_input"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "system_input"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "temperature_input"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "top_k_input"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "top_p_input"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "n_keep_input"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "n_predict_input"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "cache_prompt_input"
+    data_type: TYPE_BOOL
+    dims: [ -1 ]
+    optional: true
+  },
+  {
+    name: "stop_input"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "stream_input"
+    data_type: TYPE_BOOL
+    dims: [ -1 ]
+  },
+  {
+    name: "lora_scale_input"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+    optional: true
+  }
+]
+output [
+  {
+    name: "text_output"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "token_output"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "lora_scale_output"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "metrics_output"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  }
+]
+instance_group [
+  {
+    count: 1
+    kind: KIND_CPU
+  }
+]
+
+### general
+# number of threads to use during generation(0 = max)
+parameters: {
+  key: "n_threads"
+  value: {
+    string_value: "4"
+  }
+}
+# number of tokens to predict, n_predict_input <= n_predict (default: -1, -1 = infinity, -2 = until context filled)
+parameters: {
+  key: "n_predict"
+  value: {
+    string_value: "512"
+  }
+}
+# size of the prompt context (default: 0, 0 = loaded from model)
+parameters: {
+  key: "n_ctx"
+  value: {
+    string_value: "2048"
+  }
+}
+# logical maximum batch size (default: 2048)
+parameters: {
+  key: "n_batch"
+  value: {
+    string_value: "512"
+  }
+}
+### parallel
+# number of parallel sequences to decode (default: 1)
+parameters: {
+  key: "n_parallel"
+  value: {
+    string_value: "4"
+  }
+}
+# enable continuous batching (a.k.a dynamic batching) (default: enabled)
+parameters: {
+  key: "cont_batching"
+  value: {
+    string_value: "true"
+  }
+}
+
+### model
+# model path (default: )
+parameters: {
+  key: "model"
+  value: {
+    string_value: "/home/kylin/Workspace/model_repo/llamacpp/1/qwen2.5_3b_instruct_sq_q4_1_embed_q6_v1.0.2-business.gguf"
+  }
+}
+parameters: {
+  key: "metrics_period_ms"
+  value: {
+    string_value: "200"
+  }
+}
+parameters: {
+  key: "lora"
+  value: {
+    string_value: "/home/kylin/Workspace/model_repo/llamacpp/1/lora_sq_doc_label_v1.0.0.gguf;/home/kylin/Workspace/model_repo/llamacpp/1/lora_sq_intent_v1.0.0.gguf"
+  }
+}
+parameters: {
+  key: "lora_init_without_apply"
+  value: {
+    string_value: "false"
+  }
+}
+# 0:no decrypt, 1:tongyi, 2:shangtang
+parameters: {
+  key: "model_decrypt_type"
+  value: {
+    string_value: "0"
+  }
+}
+# empty: relative path; no empty: absolute path
+parameters: {
+  key: "worker_save_path"
+  value: {
+    string_value: ""
+  }
+}
+#enable jinja template
+parameters: {
+  key: "use_jinja"
+  value: {
+    string_value: "false"
+  }
+}
+# chat template file path
+parameters: {
+  key: "chat_template_file"
+  value: {
+    string_value: ""
+  }
+}
+# llamacpp debug
+parameters: {
+  key: "llamacpp_verbose"
+  value: {
+    string_value: "false"
+  }
+}
+

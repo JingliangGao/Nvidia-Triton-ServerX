@@ -1,0 +1,17 @@
+/usr/include/triton/core
+/usr/include/triton/backend
+/usr/include/triton/common
+/usr/lib/*/libtritonserver.so
+/usr/lib/*/libtritonbackendutils.a
+/usr/lib/*/libtritoncommonlogging.a
+/usr/lib/*/libtritontableprinter.a
+/usr/lib/*/libtritonasyncworkqueue.a
+/usr/lib/*/libtritoncommonerror.a
+/usr/lib/*/libtritonthreadpool.a
+/usr/bin/kytensor
+/usr/lib/*/cmake/TritonCore/
+/usr/lib/*/cmake/TritonBackend/
+/usr/lib/*/cmake/TritonCommon/
+/usr/lib/systemd/system/kytensor.service
+/opt/system/conf/kytensor/kytensor.conf
+debian/kytensor-server-manifests.json opt/system/resource/update-manifests/

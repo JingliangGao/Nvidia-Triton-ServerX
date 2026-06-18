@@ -1,0 +1,11 @@
+[Unit]
+Description=Kylin triton inference server
+
+[Service]
+EnvironmentFile=/opt/system/conf/kytensor/kytensor.conf
+ExecStart=/bin/bash -c 'source /usr/share/kylin-ai-python-env/python-env/bin/activate && /usr/bin/kytensor --model-repository=/usr/share/kylin-ai/model-repository --model-repository=/opt/appdata/kylin-ai/model-repository --model-control-mode=explicit'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,29 @@
+kytensor (2.49.0.6-1ok4) v11-2503; urgency=medium
+
+  * [ad82a586f695]
+  * [fda768326f89]
+  * [0faaf2c1fce1]
+
+ -- liuyihu <liuyihu@kylinos.cn>  Wed, 01 Oct 2025 09:10:59 +0800
+
+kytensor (2.49.0.6-1ok3) v11-2503; urgency=medium
+
+  * [0e3a778b2c5d]
+  * [36a57d83a019]
+
+ -- liuyihu <liuyihu@kylinos.cn>  Wed, 01 Oct 2025 08:55:56 +0800
+
+kytensor (2.49.0.6-1ok2) v11-2503; urgency=medium
+
+  * [fd4cc4383114]
+  * [1b4bba0ab5d7]
+
+ -- liuyihu <liuyihu@kylinos.cn>  Wed, 01 Oct 2025 08:14:53 +0800
+
+kytensor (2.49.0.6-1ok1) v11-2503; urgency=medium
+
+  * set symbolic link
+  * [4a910692cd2b]
+  * [1ece54c278da]
+
+ -- liuyihu <liuyihu@kylinos.cn>  Wed, 01 Oct 2025 07:11:27 +0800

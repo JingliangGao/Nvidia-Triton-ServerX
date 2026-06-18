@@ -1,0 +1,6 @@
+#!/bin/sh
+# postinst script for tritonserver
+
+systemctl daemon-reload
+systemctl enable kytensor.service
+systemctl start kytensor.service

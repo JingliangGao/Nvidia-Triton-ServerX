@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=TritonServer
+Exec=/bin/bash -c "source /usr/share/kylin-ai-python-env/python-env/bin/activate && tritonserver --model-repository=/opt/appdata/kylin-ai/model-repository --model-control-mode=explicit --http-address=127.0.0.1 --grpc-address=127.0.0.1 --log-file=$HOME/.log/tritonserver.log"
+Comment=Triton Server
+NoDisplay=true
+StartupNotify=false
+Terminal=false
+X-UKUI-AutoRestart=true
+X-UKUI-Autostart-Phase=Application

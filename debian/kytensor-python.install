@@ -1,0 +1,3 @@
+/usr/lib/kytensor/backends/python/libtriton_python.so
+/usr/lib/kytensor/backends/python/kytensor-stub
+/usr/lib/kytensor/backends/python/triton_python_backend_utils.py

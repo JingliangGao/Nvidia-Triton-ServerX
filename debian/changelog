@@ -1,0 +1,116 @@
+kytensor (2.49.0.6-ok7k0.20update12) v11-2603-preview; urgency=medium
+
+  * BUG: #594431 删除推理响应以释放模型引用计数
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Sat, 13 Jun 2026 21:16:37 +0800
+
+kytensor (2.49.0.6-ok7k0.20update11) v11-2603-preview; urgency=medium
+
+  * BUG: #598673 修复多客户端并发发送导致协议解析失败
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Sat, 13 Jun 2026 21:15:58 +0800
+
+kytensor (2.49.0.6-ok7k0.20update10) v11-2603-preview; urgency=medium
+
+  * BUG: 无
+  * 需求: 无
+  * 其他改动说明: #624473 代码架构调整
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Thu, 11 Jun 2026 22:36:46 +0800
+
+kytensor (2.49.0.6-ok7k0.20update9) v11-2603-preview; urgency=medium
+
+  * BUG: #585267 增加自研协议日志输出配置
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Tue, 09 Jun 2026 17:01:24 +0800
+
+kytensor (2.49.0.6-ok7k0.20update8) v11-2603-preview; urgency=medium
+
+  * BUG: #585267 修复推理请求失败路径崩溃
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Tue, 09 Jun 2026 17:00:48 +0800
+
+kytensor (2.49.0.6-ok7k0.20update7) v11-2603-preview; urgency=medium
+
+  * BUG: 无
+  * 需求: 无
+  * 其他改动说明: #632963 大模型推理底层性能指标测试接口
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Thu, 04 Jun 2026 17:39:24 +0800
+
+kytensor (2.49.0.6-ok7k0.20update6) v11-2603-preview; urgency=medium
+
+  * BUG: #580029 禁用编译产物中的 RPATH/RUNPATH
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Thu, 04 Jun 2026 17:27:45 +0800
+
+kytensor (2.49.0.6-ok7k0.20update5) v11-2603-preview; urgency=medium
+
+  * BUG: 无
+  * 需求: 无
+  * 其他改动说明: IsModelReady请求补充model name和version字段
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Fri, 29 May 2026 16:48:36 +0800
+
+kytensor (2.49.0.6-ok7k0.20update4) v11-2603-preview; urgency=medium
+
+  * BUG: #586859 修复socket权限问题及客户端断连崩溃
+  * 需求: 无
+  * 其他改动说明: #632963 小模型性能评估工具
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Fri, 29 May 2026 16:47:58 +0800
+
+kytensor (2.49.0.6-ok7k0.20update3) v11-2603-preview; urgency=medium
+
+  * BUG: #550539 解决客户端创建失败后还继续发请求，导致崩溃问题
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Wed, 20 May 2026 19:39:24 +0800
+
+kytensor (2.49.0.6-ok7k0.20update2) v11-2603-preview; urgency=medium
+
+  * BUG: #550539 解决kytensor_client多次释放
+  * 需求: 无
+  * 其他改动说明: 无
+  * 其他改动影响域: 无
+
+ -- 刘意虎 <liuyihu@kylinos.cn>  Sat, 09 May 2026 15:40:41 +0800
+
+kytensor (2.49.0.6-ok7k0.20update1) v11-2603-preview; urgency=medium
+
+  * BUG: 无
+  * 需求: 无
+  * 其他改动说明: 新增本地协议
+  * 其他改动影响域: 无
+
+ -- liuyihu <liuyihu@kylinos.cn>  Sun, 03 May 2026 19:52:33 +0800
+
+kytensor (2.49.0.6-ok7k0.20) v11-2603-preview; urgency=medium
+
+  * BUG: #507289 增加kytensor-server组件更新json文件
+  * 需求: 无
+  * 其他改动说明: 增加支持算力共享推理逻辑等功能
+  * 其他改动影响域: 无
+
+ -- liuyihu <liuyihu@kylinos.cn>  Wed, 01 Oct 2025 07:11:27 +0800
